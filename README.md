@@ -87,8 +87,7 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 
 /* 头像与装饰框之间的缝隙：默认 -1.5px 已经四周没缝，想留缝就调正值 */
 .event--message {
-  --avatar-picture-gap: 0px;    /* 贴住内圈上下，左右留 1.1px */
-  --avatar-picture-gap: 3px;    /* 想要明显的留白效果 */
+  --avatar-picture-gap: 3px;  /* 例如改成留 3px 缝隙 */
 }
 ```
 
