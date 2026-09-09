@@ -1,0 +1,131 @@
+/*
+@title        模版标题（必填）
+@author       作者（必填）
+@description  一句话描述这个模版
+@updated      Jan 1, 2026, 12:00:00 AM PDT
+@version      1.0.0
+@thumbnail    https://example.com/thumbnail.png
+@features     dark-mode, animated
+
+说明：
+- 交付远程模版时，整个文件保持「元数据 + @import + @layer remote-css { ... }」结构。
+- 若只用于「高级 CSS 编辑器」，把下面的 remote-css 全部改成 custom-css。
+- @import 必须放在 @layer 之外，且位于其它规则之前。
+- 单文件需小于 1024 KB（图片素材不计）。
+*/
+
+/* 字体：@import 不要嵌套在 @layer 层叠层内 */
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,600;1,400;1,600&display=swap");
+
+@layer remote-css {
+  /* ---------- 0. OBS 透明背景 ---------- */
+  body {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  /* ---------- 1. 设计令牌：集中定义，各事件复用 ---------- */
+  .event {
+    /* 字体 */
+    --event-font-family: "Jost", var(--font-sans);
+
+    /* 文字颜色（跟随深浅色模式自动调整） */
+    --event-message-color: var(--text-color);
+
+    /* 用户名颜色：0 水友 / 1 总督 / 2 提督 / 3 舰长 */
+    --event-username-text-0: var(--color-rose-600);
+    --event-username-text-1: var(--color-amber-400);
+    --event-username-text-2: var(--color-violet-300);
+    --event-username-text-3: var(--color-sky-300);
+
+    /* 模版自己的间距/形状令牌 */
+    --bubble-radius: 18px;
+    --bubble-padding: 12px 16px;
+    --bubble-bg: var(--color-rose-100);
+    --bubble-border: var(--color-rose-300);
+  }
+
+  /* ---------- 2. 弹幕气泡 ---------- */
+  .event--message .message {
+    padding: var(--bubble-padding) !important;
+    border: 1px solid var(--bubble-border);
+    border-radius: var(--bubble-radius);
+    background: var(--bubble-bg) !important;
+    color: var(--text-color);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  /* 长用户名省略号 */
+  .event--message .username-text {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- 3. 按档位微调（1 总督 / 2 提督 / 3 舰长） ---------- */
+  .event--message.guard-level--1 {
+    --event-danmaku-bg-1: color-mix(in hsl, var(--color-amber-400) 22%, transparent);
+  }
+  .event--message.guard-level--2 {
+    --event-danmaku-bg-2: color-mix(in hsl, var(--color-violet-500) 20%, transparent);
+  }
+  .event--message.guard-level--3 {
+    --event-danmaku-bg-3: color-mix(in hsl, var(--color-sky-500) 20%, transparent);
+  }
+
+  /* ---------- 4. 礼物 / 醒目留言 / 上舰 ---------- */
+  /* SC 上下两段要分别上色 */
+  .event--superchat.event-show-as--normal .top {
+    background: var(--color-rose-600) !important;
+    color: var(--color-rose-50) !important;
+  }
+  .event--superchat.event-show-as--normal .message {
+    background: color-mix(in hsl, var(--color-rose-950) 82%, transparent) !important;
+    color: var(--color-rose-50) !important;
+  }
+
+  .event--gift.event-show-as--normal.event-size--highlight {
+    --event-gift-text-1: var(--color-rose-50);
+    --event-gift-bg-1: var(--color-rose-500);
+  }
+
+  .event--toast.event-show-as--normal {
+    --event-toast-text-1: var(--color-amber-50);
+    --event-toast-bg-1: var(--color-amber-600);
+    --event-toast-text-2: var(--color-violet-50);
+    --event-toast-bg-2: var(--color-violet-600);
+    --event-toast-text-3: var(--color-sky-50);
+    --event-toast-bg-3: var(--color-sky-600);
+  }
+
+  .event--system {
+    --event-system-text: color-mix(in hsl, var(--text-color) 55%, transparent);
+  }
+
+  /* ---------- 5. 深色模式 ---------- */
+  [data-theme="dark"] .event {
+    --bubble-bg: color-mix(in hsl, var(--color-rose-950) 80%, transparent);
+    --bubble-border: var(--color-rose-800);
+  }
+
+  /* ---------- 6. 动效：必须挂在 .can-motion 下 ---------- */
+  .event--message {
+    /* 只对最后 n+2 条弹幕加动画，避免长列表持续重排 */
+    .can-motion & :nth-last-child(-n + 2) {
+      animation: laplace-slide-in ease-out forwards;
+      animation-duration: var(--animation-duration, 220ms);
+    }
+  }
+
+  @keyframes laplace-slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

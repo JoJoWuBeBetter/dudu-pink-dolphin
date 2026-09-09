@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAPLACE Chat 模版本地预览</title>
+
+<!-- ============================================================
+     候选模版：把 href 换成你的 CSS 文件，或用页面顶部的文件选择器载入
+     ============================================================ -->
+<link id="candidate" rel="stylesheet" href="remote-template.css">
+
+<style>
+/* ============================================================
+   1) 平台色盘近似值（真实平台用 OKLCH + SCAS，这里是 hex 近似）
+      2) 平台基础结构近似值
+      两者都放进 @layer template，让候选模版的
+      remote-css / custom-css 层能按文档规定的优先级覆盖它们。
+      仅供本地预览，不要复制进交付的模版。
+   ============================================================ */
+@layer template {
+:root {
+  --font-sans: "Inter", "Microsoft YaHei", system-ui, sans-serif;
+  --text-color: #111827;
+  --animation-duration: 220ms;
+
+  --color-rose-50: #fff1f2; --color-rose-100: #ffe4e6; --color-rose-300: #fda4af;
+  --color-rose-500: #f43f5e; --color-rose-600: #e11d48; --color-rose-800: #9f1239;
+  --color-rose-950: #4c0519;
+  --color-amber-50: #fffbeb; --color-amber-300: #fcd34d; --color-amber-400: #fbbf24;
+  --color-amber-600: #d97706; --color-amber-950: #451a03;
+  --color-violet-50: #f5f3ff; --color-violet-300: #c4b5fd; --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed; --color-violet-950: #2e1065;
+  --color-sky-50: #f0f9ff; --color-sky-300: #7dd3fc; --color-sky-500: #0ea5e9;
+  --color-sky-600: #0284c7; --color-sky-950: #082f49;
+  --color-fuchsia-300: #f0abfc; --color-fuchsia-500: #d946ef;
+  --color-gray-100: #f3f4f6; --color-gray-300: #d1d5db; --color-gray-500: #6b7280;
+  --color-gray-700: #374151; --color-gray-900: #111827; --color-gray-950: #030712;
+}
+[data-theme="dark"] {
+  --text-color: #f3f4f6;
+}
+
+/* ============================================================
+   2) 平台基础结构样式近似值（真实平台自带，这里用于让模版有参照）
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text-color);
+  background: #ffffff;
+  padding: 16px;
+}
+[data-theme="dark"] body { background: #0b0b0f; }
+
+.event-list { display: flex; flex-direction: column; gap: 6px; max-width: 640px; }
+
+.event--message { display: flex; align-items: flex-start; gap: 8px; padding: 2px 0; }
+.event--message > .meta { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.event--message > .message { flex: 1 1 auto; min-width: 0; }
+
+.sender-avatar { position: relative; width: 18px; height: 18px; flex: 0 0 auto; }
+.sender-avatar .avatar-img-wrap { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+.sender-avatar .avatar { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.sender-avatar .avatar-frame { display: none; }
+
+.username { font-size: 13px; font-weight: 600; white-space: nowrap; }
+.fans-medal { font-size: 11px; padding: 0 4px; border-radius: 4px; background: var(--color-gray-100); }
+.current-rank, .mod-badge, .guard-badge { font-size: 11px; }
+.event--system { font-size: 12px; opacity: .7; }
+.event--gift, .event--toast { font-size: 13px; padding: 6px 10px; border-radius: 8px; background: var(--color-gray-100); }
+.event--superchat { border-radius: 10px; overflow: hidden; }
+.event--superchat .top { padding: 8px 10px; font-weight: 600; }
+.event--superchat .message { padding: 10px; }
+[data-theme="dark"] .event--gift,
+[data-theme="dark"] .event--toast { background: #1b1b22; }
+}
+
+/* ============================================================
+   3) 预览页自身的 UI（不影响模版）
+   ============================================================ */
+.preview-bar {
+  position: sticky; top: 0; z-index: 99; display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: center; padding: 10px 0 14px; margin-bottom: 8px;
+  border-bottom: 1px dashed var(--color-gray-300);
+  background: inherit; font-family: var(--font-sans); font-size: 12px;
+}
+.preview-bar button {
+  font: inherit; padding: 5px 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--color-gray-300); background: transparent; color: inherit;
+}
+.preview-note { font-size: 11px; opacity: .6; line-height: 1.5; margin: 0 0 12px; }
+</style>
+</head>
+<body>
+
+<div class="preview-bar">
+  <strong>预览控件</strong>
+  <button id="toggle-theme">切换深浅色</button>
+  <button id="toggle-motion">切换 can-motion / reduced-motion</button>
+  <label>
+    载入 CSS 文件：<input type="file" id="css-file" accept=".css,text/css">
+  </label>
+  <span id="status">当前：<code>../remote-template.css</code></span>
+</div>
+<p class="preview-note">
+  近似还原：色盘为 hex 近似、基础结构为简化模拟。用于快速迭代，最终仍需在
+  laplace.live 配置器里确认一次。
+</p>
+
+<!-- ============================================================
+     事件 DOM 仿真：类名与层级对齐平台
+     ============================================================ -->
+<div class="event-list can-motion" id="event-list">
+
+  <!-- 水友 -->
+  <div class="event event--message">
+    <div class="meta">
+      <div class="sender-avatar">
+        <div class="avatar-img-wrap">
+          <img class="avatar" alt=""
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23fda4af'/%3E%3Ccircle cx='20' cy='15' r='7' fill='%23fff1f2'/%3E%3Ccircle cx='20' cy='34' r='12' fill='%23fff1f2'/%3E%3C/svg%3E">
+        </div>
+        <div class="avatar-frame"></div>
+      </div>
+      <span class="username"><span class="username-text">普通水友</span></span>
+      <span class="fans-medal"><span class="fans-medal-content">海豚</span><span class="fans-medal-level">12</span></span>
+      <span class="current-rank">榜 3</span>
+    </div>
+    <div class="message">这是一条普通弹幕，用来检查气泡的间距、圆角与配色。</div>
+  </div>
+
+  <!-- 舰长 -->
+  <div class="event event--message guard-level--3">
+    <div class="meta">
+      <div class="sender-avatar">
+        <div class="avatar-img-wrap">
+          <img class="avatar" alt=""
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%237dd3fc'/%3E%3Ccircle cx='20' cy='15' r='7' fill='%23f0f9ff'/%3E%3Ccircle cx='20' cy='34' r='12' fill='%23f0f9ff'/%3E%3C/svg%3E">
+        </div>
+        <div class="avatar-frame"></div>
+      </div>
+      <span class="username"><span class="username-text">舰长同学</span></span>
+      <span class="guard-badge">舰长</span>
+    </div>
+    <div class="message">舰长弹幕，检查 guard-level--3 的档位配色。</div>
+  </div>
+
+  <!-- 提督 -->
+  <div class="event event--message guard-level--2">
+    <div class="meta">
+      <div class="sender-avatar">
+        <div class="avatar-img-wrap">
+          <img class="avatar" alt=""
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23c4b5fd'/%3E%3Ccircle cx='20' cy='15' r='7' fill='%23f5f3ff'/%3E%3Ccircle cx='20' cy='34' r='12' fill='%23f5f3ff'/%3E%3C/svg%3E">
+        </div>
+        <div class="avatar-frame"></div>
+      </div>
+      <span class="username"><span class="username-text">提督同学</span></span>
+      <span class="guard-badge">提督</span>
+    </div>
+    <div class="message">提督弹幕，检查 guard-level--2。</div>
+  </div>
+
+  <!-- 总督 -->
+  <div class="event event--message guard-level--1">
+    <div class="meta">
+      <div class="sender-avatar">
+        <div class="avatar-img-wrap">
+          <img class="avatar" alt=""
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23fbbf24'/%3E%3Ccircle cx='20' cy='15' r='7' fill='%23fffbeb'/%3E%3Ccircle cx='20' cy='34' r='12' fill='%23fffbeb'/%3E%3C/svg%3E">
+        </div>
+        <div class="avatar-frame"></div>
+      </div>
+      <span class="username"><span class="username-text">总督同学</span></span>
+      <span class="mod-badge">房管</span>
+      <span class="guard-badge">总督</span>
+    </div>
+    <div class="message">总督弹幕，检查 guard-level--1 与房管标识。</div>
+  </div>
+
+  <!-- 超长用户名 + 多行 -->
+  <div class="event event--message">
+    <div class="meta">
+      <div class="sender-avatar">
+        <div class="avatar-img-wrap">
+          <img class="avatar" alt=""
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23f0abfc'/%3E%3Ccircle cx='20' cy='15' r='7' fill='%23fdf4ff'/%3E%3Ccircle cx='20' cy='34' r='12' fill='%23fdf4ff'/%3E%3C/svg%3E">
+        </div>
+        <div class="avatar-frame"></div>
+      </div>
+      <span class="username"><span class="username-text">这是一个非常非常非常长的用户名用来检查省略号</span></span>
+    </div>
+    <div class="message">多行文本测试：第一行内容。第二行内容稍微长一点，用来检查行距、换行与上下留白是否合适。第三行继续填充，确保长文本不会撑破气泡或溢出容器。</div>
+  </div>
+
+  <!-- 醒目留言 -->
+  <div class="event event--superchat event-show-as--normal event-price-rank--3">
+    <div class="top">SC 用户 · ¥50</div>
+    <div class="message">醒目留言正文，检查 SC 上下两段的配色是否协调。</div>
+  </div>
+
+  <!-- 高亮礼物 -->
+  <div class="event event--gift event-show-as--normal event-size--highlight event-price-rank--2">
+    投喂了 小心心 × 10
+  </div>
+
+  <!-- 上舰提示 -->
+  <div class="event event--toast event-show-as--normal">
+    舰长同学 开通了 舰长
+  </div>
+
+  <!-- 系统消息 -->
+  <div class="event event--system">已连接到直播间</div>
+
+</div>
+
+<script>
+  const root = document.documentElement;
+  const list = document.getElementById('event-list');
+  const status = document.getElementById('status');
+
+  document.getElementById('toggle-theme').addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  });
+
+  document.getElementById('toggle-motion').addEventListener('click', () => {
+    const reduced = list.classList.toggle('reduced-motion');
+    list.classList.toggle('can-motion', !reduced);
+  });
+
+  document.getElementById('css-file').addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      let style = document.getElementById('candidate-inline');
+      if (!style) {
+        style = document.createElement('style');
+        style.id = 'candidate-inline';
+        document.head.appendChild(style);
+      }
+      style.textContent = reader.result;
+      status.textContent = '当前：' + file.name;
+    };
+    reader.readAsText(file);
+  });
+</script>
+</body>
+</html>

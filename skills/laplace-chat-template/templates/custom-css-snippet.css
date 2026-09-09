@@ -1,0 +1,36 @@
+/*
+编辑器「高级 CSS 编辑器」用的精简覆盖骨架。
+
+场景：已经云端载入了一款内置模版，只想覆盖其中几处。
+要点：
+- 层叠层用 custom-css，它永远覆盖 remote-css 与云端内置模版。
+- 只写需要覆盖的字段，其余删掉，文件越短越好。
+- 复制到 OBS 的「自定义 CSS」时同样保持层结构。
+*/
+
+@layer custom-css {
+  /* OBS 透明背景（如果云端模版已包含可删） */
+  body {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  /* 只覆盖需要的变量 */
+  .event {
+    --event-font-family: "ZCOOL KuaiLe", var(--font-sans);
+    --event-username-text-0: var(--color-rose-600);
+    --event-username-text-1: var(--color-amber-400);
+    --event-username-text-2: var(--color-violet-300);
+    --event-username-text-3: var(--color-sky-300);
+  }
+
+  /* 只覆盖气泡的一处样式 */
+  .event--message .message {
+    border-radius: 24px !important;
+    background: color-mix(in hsl, var(--color-rose-100) 85%, transparent) !important;
+  }
+
+  /* 深色模式下的对应调整 */
+  [data-theme="dark"] .event--message .message {
+    background: color-mix(in hsl, var(--color-rose-950) 80%, transparent) !important;
+  }
+}

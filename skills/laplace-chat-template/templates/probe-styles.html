@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>LAPLACE Chat 模版计算样式探针</title>
+<!-- 用法：?css=path/to/your.css（默认 remote-template.css） -->
+<link id="candidate" rel="stylesheet" href="remote-template.css">
+<style>
+/* 平台色盘 + 基础结构近似值。放进 @layer template，使候选模版的
+   remote-css / custom-css 层能按文档规定的优先级覆盖它们。
+   勿复制进交付文件。 */
+@layer template {
+:root {
+  --font-sans: sans-serif; --text-color: #111827; --animation-duration: 220ms;
+  --color-rose-50:#fff1f2; --color-rose-100:#ffe4e6; --color-rose-300:#fda4af; --color-rose-500:#f43f5e;
+  --color-rose-600:#e11d48; --color-rose-800:#9f1239; --color-rose-950:#4c0519;
+  --color-amber-50:#fffbeb; --color-amber-300:#fcd34d; --color-amber-400:#fbbf24; --color-amber-600:#d97706;
+  --color-violet-50:#f5f3ff; --color-violet-300:#c4b5fd; --color-violet-500:#8b5cf6; --color-violet-600:#7c3aed;
+  --color-sky-50:#f0f9ff; --color-sky-300:#7dd3fc; --color-sky-500:#0ea5e9; --color-sky-600:#0284c7;
+  --color-fuchsia-300:#f0abfc; --color-fuchsia-500:#d946ef;
+  --color-gray-100:#f3f4f6; --color-gray-300:#d1d5db; --color-gray-500:#6b7280; --color-gray-700:#374151;
+}
+body { margin: 0; padding: 10px; font-family: var(--font-sans); color: var(--text-color); }
+.event-list { display: flex; flex-direction: column; gap: 6px; max-width: 640px; }
+.event--message { display: flex; align-items: flex-start; gap: 8px; }
+.event--message > .meta { display: flex; align-items: center; gap: 6px; }
+.event--message > .message { flex: 1 1 auto; min-width: 0; }
+.sender-avatar { width: 18px; height: 18px; }
+.sender-avatar .avatar-img-wrap { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+.sender-avatar .avatar { display: block; width: 100%; height: 100%; }
+.sender-avatar .avatar-frame { display: none; }
+.username { font-size: 13px; font-weight: 600; }
+.event--superchat .top { padding: 8px 10px; }
+.event--superchat .message { padding: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="event-list can-motion">
+  <div class="event event--message">
+    <div class="meta">
+      <div class="sender-avatar"><div class="avatar-img-wrap"><img class="avatar" alt=""></div><div class="avatar-frame"></div></div>
+      <span class="username"><span class="username-text">普通水友</span></span>
+    </div>
+    <div class="message">普通弹幕</div>
+  </div>
+  <div class="event event--message guard-level--3">
+    <div class="meta">
+      <div class="sender-avatar"><div class="avatar-img-wrap"><img class="avatar" alt=""></div><div class="avatar-frame"></div></div>
+      <span class="username"><span class="username-text">舰长同学</span></span>
+    </div>
+    <div class="message">舰长弹幕</div>
+  </div>
+  <div class="event event--message guard-level--1">
+    <div class="meta">
+      <div class="sender-avatar"><div class="avatar-img-wrap"><img class="avatar" alt=""></div><div class="avatar-frame"></div></div>
+      <span class="username"><span class="username-text">总督同学</span></span>
+    </div>
+    <div class="message">总督弹幕</div>
+  </div>
+  <div class="event event--superchat event-show-as--normal event-price-rank--3">
+    <div class="top">SC 顶部</div>
+    <div class="message">SC 正文</div>
+  </div>
+  <div class="event event--gift event-show-as--normal event-size--highlight event-price-rank--2">礼物事件</div>
+  <div class="event event--toast event-show-as--normal">上舰提示</div>
+  <div class="event event--system">系统消息</div>
+</div>
+<pre id="out">probe running…</pre>
+<script>
+const link = document.getElementById('candidate');
+const cssParam = new URLSearchParams(location.search).get('css');
+const out = document.getElementById('out');
+
+function computed(sel, prop) {
+  const el = document.querySelector(sel);
+  return el ? getComputedStyle(el).getPropertyValue(prop).trim() : 'MISSING';
+}
+function custom(sel, prop) {
+  const el = document.querySelector(sel);
+  return el ? getComputedStyle(el).getPropertyValue(prop).trim() : 'MISSING';
+}
+function snapshot(label) {
+  return {
+    label,
+    message_radius: computed('.event--message .message', 'border-radius'),
+    message_padding: computed('.event--message .message', 'padding'),
+    message_border: computed('.event--message .message', 'border-top-color'),
+    message_bg: computed('.event--message .message', 'background-color'),
+    message_color: computed('.event--message .message', 'color'),
+    message_overflow_wrap: computed('.event--message .message', 'overflow-wrap'),
+    username_text_overflow: computed('.username-text', 'text-overflow'),
+    guard3_danmaku_bg: custom('.guard-level--3', '--event-danmaku-bg-3'),
+    guard1_danmaku_bg: custom('.guard-level--1', '--event-danmaku-bg-1'),
+    sc_top_bg: computed('.event--superchat .top', 'background-color'),
+    sc_msg_color: computed('.event--superchat .message', 'color'),
+    gift_bg: custom('.event--gift', '--event-gift-bg-1'),
+    toast_bg: custom('.event--toast', '--event-toast-bg-1'),
+    system_text: custom('.event--system', '--event-system-text'),
+    body_bg: getComputedStyle(document.body).backgroundColor,
+    animation_name: computed('.event--message .message', 'animation-name'),
+    font_family: computed('.event--message .message', 'font-family'),
+    sheets: [...document.styleSheets].map(s => {
+      try { return `${s.href || 'inline'}[${s.cssRules.length}]`; }
+      catch (e) { return `${s.href || 'inline'}[BLOCKED]`; }
+    }).join(' | ')
+  };
+}
+function run() {
+  const light = snapshot('light');
+  document.documentElement.dataset.theme = 'dark';
+  const dark = snapshot('dark');
+  out.textContent = JSON.stringify({ light, dark }, null, 1);
+}
+
+// ?css= 指定候选文件：停用默认 link，改用 fetch + <style> 注入，避免加载时序问题
+async function main() {
+  if (cssParam) {
+    link.disabled = true;
+    try {
+      const res = await fetch(cssParam, { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+      const text = await res.text();
+      const style = document.createElement('style');
+      style.textContent = text;
+      document.head.appendChild(style);
+      await new Promise(r => setTimeout(r, 50)); // 等样式表解析与重算
+    } catch (e) {
+      out.textContent = 'ERROR: 无法加载 ' + cssParam + ' — ' + e.message;
+      return;
+    }
+  }
+  run();
+}
+main();
+</script>
+</body>
+</html>
