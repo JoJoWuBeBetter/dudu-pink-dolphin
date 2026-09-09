@@ -2,8 +2,8 @@
   @title        海豚也是豚
   @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
   @author       JoJoWu
-  @updated      September 09, 2026, 11:31:39 PM GMT+8
-  @version      1.0.19
+  @updated      September 09, 2026, 11:34:09 PM GMT+8
+  @version      1.0.20
 */
 
 /* 引入荆南圆体（ZeoSeven Fonts 在线分包，SIL OFL 1.1） */
@@ -17,7 +17,7 @@
     --nameplate-width: 210px; /* 名牌基础宽度，长名字省略 */
     --avatar-frame-size: 100px;   /* 头像装饰框尺寸 */
     --avatar-hole-size: 68.7%;    /* 头像框内圈开口直径：圆头像能塞进的最大直径，素材固有比例，一般不用改 */
-    --avatar-picture-gap: 1.35px; /* 头像与内圈之间的缝隙：0 贴住内圈上下，-1.5px 四周完全没缝 */
+    --avatar-picture-gap: -1.5px; /* 头像与内圈之间的缝隙：默认 -1.5px 四周完全没缝；0 贴住内圈上下；正值留缝 */
     --avatar-offset-x: 8px; /* 头像水平移动：正数向右靠近正文，负数向左 */
     --avatar-text-gap: 5px; /* 头像与正文框间距 */
     --avatar-offset-y: 12px; /* 头像距本条顶部 */

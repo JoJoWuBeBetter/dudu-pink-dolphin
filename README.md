@@ -49,7 +49,7 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 | `--nameplate-width` | `210px` | 名牌基础宽度，超出显示省略号 |
 | `--avatar-frame-size` | `100px` | 头像装饰框尺寸 |
 | `--avatar-hole-size` | `68.7%` | 头像框内圈开口直径，素材固有比例，一般不用改 |
-| `--avatar-picture-gap` | `1.35px` | 头像与内圈之间的缝隙：`0` 贴住内圈上下，`-1.5px` 四周完全没缝 |
+| `--avatar-picture-gap` | `-1.5px` | 头像与内圈之间的缝隙：默认四周完全没缝；`0` 贴住内圈上下；正值留缝 |
 | `--avatar-offset-x` | `8px` | 头像水平位移（正数向右） |
 | `--avatar-text-gap` | `5px` | 头像与正文框间距 |
 | `--avatar-offset-y` | `12px` | 头像距本条顶部 |
@@ -85,9 +85,10 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
   --candy-offset-y: -8px;      /* 糖果向上 8px */
 }
 
-/* 头像贴紧装饰框内圈，消除缝隙 */
+/* 头像与装饰框之间的缝隙：默认 -1.5px 已经四周没缝，想留缝就调正值 */
 .event--message {
-  --avatar-picture-gap: -1.5px;  /* 0 = 贴住内圈上下；-1.5px = 四周完全没缝 */
+  --avatar-picture-gap: 0px;    /* 贴住内圈上下，左右留 1.1px */
+  --avatar-picture-gap: 3px;    /* 想要明显的留白效果 */
 }
 ```
 
@@ -149,6 +150,7 @@ CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/it
 
 | 版本 | 变更 |
 | --- | --- |
+| 1.0.20 | `--avatar-picture-gap` 默认改为 `-1.5px`，头像与装饰框之间不再有缝隙 |
 | 1.0.19 | 头像尺寸改为由「内圈直径 − 缝隙」自动计算，新增 `--avatar-picture-gap` 消除头像与装饰框之间的缝隙 |
 | 1.0.18 | 微调项链挂件默认尺寸与位置（`105px` / `+2px` / `+8px`） |
 | 1.0.16 – 1.0.17 | 蝴蝶结、项链、糖果三个角标支持独立的位置与缩放参数 |
