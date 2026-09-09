@@ -21,13 +21,13 @@ LAPLACE Chat 的粉色弹幕样式：自适应正文框、顶部用户名名牌�
 
 ### 方式一：远程模版（推荐）
 
-在 LAPLACE Chat 的「样式 → 远程模版」中填入：
+把本样式发布到可稳定访问的 HTTPS 静态托管上，然后在 LAPLACE Chat 的「样式 → 远程模版」中填入该地址：
 
 ```
-https://dudu-1304160106.cos.ap-guangzhou.myqcloud.com/dudu-pink-dolphin.css
+https://<你的静态托管域名>/dudu-pink-dolphin.css
 ```
 
-样式会随版本自动更新，无需手动维护。
+样式会随版本自动更新，无需手动维护。发布时请把 CSS 里的 `./assets/...` 换成对应的绝对地址。
 
 ### 方式二：自定义 CSS
 
