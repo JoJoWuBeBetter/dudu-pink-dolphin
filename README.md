@@ -99,6 +99,8 @@ CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/it
 - ❌ 售卖、付费分发，以及付费产品 / 付费服务 / 付费代做等商业集成
 - ❌ 去除署名、冒名原创、单独挪用 `assets/` 中的图片素材
 
+**特别授权**：B 站主播 [梨安不迷路](https://space.bilibili.com/1900141897) 已获得免费使用授权，可在带收益的直播间中使用本项目。
+
 如需在带收益的直播间使用或用于任何商业场景，请先通过[项目仓库](https://github.com/JoJoWuBeBetter/dudu-pink-dolphin/issues)联系作者取得授权。
 
 ## 素材说明
