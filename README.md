@@ -56,17 +56,30 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 | `--text-space-left` | `30px` | 正文左侧留白 |
 | `--text-space-right` | `30px` | 正文右侧留白 |
 | `--text-line-height` | `1.45` | 多行文字行距（无单位） |
-| `--necklace-size` | `112px` | 项链挂件尺寸（放大缩小） |
-| `--necklace-offset-x` | `0px` | 项链挂件水平偏移（正数向右，负数向左） |
-| `--necklace-offset-y` | `4px` | 项链挂件垂直偏移（正数向下，负数向上） |
 
-装饰挂件示例（项链上下左右移动 + 缩放）：
+装饰挂件（三个角标均可独立调整位置与大小，偏移量正数向右 / 向下）：
+
+| 变量 | 默认值 | 说明 |
+| --- | --- | --- |
+| `--bow-size` | `104px` | 蝴蝶结尺寸 |
+| `--bow-offset-x` | `-5px` | 蝴蝶结水平偏移 |
+| `--bow-offset-y` | `0px` | 蝴蝶结垂直偏移 |
+| `--necklace-size` | `112px` | 项链挂件尺寸 |
+| `--necklace-offset-x` | `0px` | 项链挂件水平偏移 |
+| `--necklace-offset-y` | `4px` | 项链挂件垂直偏移 |
+| `--candy-size` | `58px` | 糖果尺寸 |
+| `--candy-offset-x` | `0px` | 糖果水平偏移 |
+| `--candy-offset-y` | `0px` | 糖果垂直偏移 |
+
+示例：
 
 ```css
 .event--message > .message {
-  --necklace-size: 130px;      /* 放大 */
-  --necklace-offset-x: -12px;  /* 向左移动 12px */
-  --necklace-offset-y: 10px;   /* 向下移动 10px */
+  --necklace-size: 130px;      /* 项链放大 */
+  --necklace-offset-x: -12px;  /* 项链向左 12px */
+  --necklace-offset-y: 10px;   /* 项链向下 10px */
+  --bow-offset-x: 6px;         /* 蝴蝶结向右 6px */
+  --candy-offset-y: -8px;      /* 糖果向上 8px */
 }
 ```
 
