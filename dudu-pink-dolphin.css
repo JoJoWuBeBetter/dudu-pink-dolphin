@@ -1,6 +1,17 @@
+/*
+  @title        海豚也是豚
+  @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
+  @author       JoJoWu
+  @updated      September 09, 2026, 10:20:44 PM GMT+8
+  @version      1.0.14
+*/
+
+/* 引入荆南圆体（ZeoSeven Fonts 在线分包，SIL OFL 1.1） */
+/* @import 不要嵌套在 @layer 层叠层内 */
 @import url("https://fontsapi.zeoseven.com/850/main/result.css");
+
 /* ===== 留白微调：数值越小，文字越靠近边框 ===== */
-@layer custom-css {
+@layer remote-css {
   .event--message {
     --nameplate-scale: 1; /* 名牌及名字同步缩放：0.9缩小，1.1放大 */
     --nameplate-width: 210px; /* 名牌基础宽度，长名字省略 */
@@ -11,14 +22,15 @@
     --avatar-offset-y: 12px; /* 头像距本条顶部 */
     --nameplate-offset-y: 4px; /* 名牌上下偏移：正数向下，负数向上 */
     --text-space-top: 35px;    /* 正文上方留白 */
-    --text-space-bottom: 25px; /* 正文下方留白 */
-    --text-space-left: 54px;   /* 正文左侧留白 */
-    --text-space-right: 54px;  /* 正文右侧留白 */
+    --text-space-bottom: 30px; /* 正文下方留白 */
+    --text-space-left: 30px;   /* 正文左侧留白 */
+    --text-space-right: 30px;  /* 正文右侧留白 */
     --text-line-height: 1.45;  /* 多行文字行距，无单位 */
   }
 }
-/* 仅装饰弹幕正文。请用本文件替换旧版 CSS。 */
-@layer custom-css {
+
+/* 仅装饰弹幕正文。 */
+@layer remote-css {
   .event--message > .message {
     --bubble-radius: 32px;
     --bubble-border: 9px;
@@ -44,7 +56,8 @@
     box-shadow: 0 0 0 1px #ffffffdd, 0 2px 4px #bb3e6b2e,
       inset 0 0 0 2px #ffdbe9cc, inset 0 0 0 3px #ffffffe6,
       inset 3px 0 5px #ffffff88, inset 0 -3px 4px #db528233 !important;
-    color: #795064;
+    /* 弹幕正文字色：统一使用平台 SCAS 色盘 pink-500；兜底值 #f6339a 防止变量未定义时塌成默认色 */
+    color: var(--color-pink-500, #f6339a);
     font-family: "KeinannMaruPOP", "Microsoft YaHei", "Yu Gothic", "Meiryo", sans-serif !important;
     font-weight: 400;
     line-height: var(--text-line-height);
@@ -87,14 +100,8 @@
   }
 }
 
-
-
-
-
-
-
 /* 名牌绑定真实用户名，定位在正文框上沿中央 */
-@layer custom-css {
+@layer remote-css {
   .event--message > .meta {
     position: relative;
     display: flex;
@@ -134,7 +141,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #a65379 !important;
+    /* 用户名颜色：四档统一，由下方 .event--message 上的 --dudu-name 定义 */
+    color: var(--dudu-name, #a65379) !important;
     font-weight: 400;
     line-height: 1.3;
   }
@@ -156,8 +164,9 @@
   .event--message > .meta > .username::before { left: -9px; }
   .event--message > .meta > .username::after { right: -9px; }
 }
+
 /* 左头像、右正文；1=总督，2=提督，3=舰长，0=水友 */
-@layer custom-css {
+@layer remote-css {
   .event--message {
     display: grid !important;
     grid-template-columns: var(--avatar-frame-size) minmax(0, 1fr);
@@ -167,10 +176,13 @@
     box-sizing: border-box;
     padding: 0 !important;
     --custom-avatar-frame: url("./assets/avatar/base.png");
+    /* 用户名颜色：四个档位统一用奶茶棕 #826B65（名牌底上 4.67:1，清晰可读） */
+    --dudu-name: #826b65;
   }
-  .event--message.guard-level--3 { --custom-avatar-frame: url("./assets/avatar/jz.png"); }
-  .event--message.guard-level--2 { --custom-avatar-frame: url("./assets/avatar/td.png"); }
-  .event--message.guard-level--1 { --custom-avatar-frame: url("./assets/avatar/zd.png"); }
+  /* 本文件为脱敏版（相对路径）。发布到远程模版时把素材地址换成绝对 URL，并给头像框加 ?v= 版本参数：换图后递增，客户端才会重新拉取 */
+  .event--message.guard-level--3 { --custom-avatar-frame: url("./assets/avatar/jz.png"); } /* 舰长 */
+  .event--message.guard-level--2 { --custom-avatar-frame: url("./assets/avatar/td.png"); } /* 提督 */
+  .event--message.guard-level--1 { --custom-avatar-frame: url("./assets/avatar/zd.png"); } /* 总督 */
   .event--message > .meta { display: contents !important; }
   .event--message > .message { grid-column: 2; grid-row: 1; }
   .event--message > .meta > :not(.sender-avatar):not(.username),
@@ -235,5 +247,29 @@
     max-width: calc(100% - var(--avatar-frame-size) - var(--avatar-text-gap) - 160px);
     transform: translateX(-50%) scale(var(--nameplate-scale));
     transform-origin: center;
+  }
+}
+
+/* ===== 弹幕进入动效：从左向右滑入 + 淡入 =====
+   只在事件速率低于弹幕机阈值时播放（此时事件列表带 .can-motion）；
+   速率过高或控制台模式下平台改用 .reduced-motion，动画不播放，弹幕保持静态可读。
+   想调整幅度改 translateX 的 -32px，想调整快慢改 --animation-duration 的兜底值。 */
+@layer remote-css {
+  .can-motion .event--message {
+    animation-name: dudu-enter-left;
+    animation-duration: var(--animation-duration, 320ms);
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation-fill-mode: both;
+  }
+
+  @keyframes dudu-enter-left {
+    from {
+      opacity: 0;
+      transform: translateX(-32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 }

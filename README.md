@@ -1,6 +1,6 @@
 # dudu-pink-dolphin
 
-LAPLACE Chat 的粉色弹幕样式，包含自适应正文框、顶部用户名名牌、可爱的中文字体，以及按舰长等级区分的头像装饰框。
+LAPLACE Chat 的粉色弹幕样式，包含自适应正文框、顶部用户名名牌、可爱的中英日字体，以及按舰长等级区分的头像装饰框。
 
 ## 文件
 
@@ -41,7 +41,9 @@ CSS 中的图片路径使用相对路径。直接在 LAPLACE Chat 编辑器中�
 
 ## 字体
 
-样式使用 Google Fonts 的 ZCOOL KuaiLe（站酷快乐体），字体项目采用 SIL Open Font License 1.1。CSS 通过顶部的 `@import` 在线加载字体。
+两份样式的正文与用户名均使用荆南圆体（CSS 字体名 `KeinannMaruPOP`），支持简体中文、繁体中文、英文和日文。字体采用 SIL Open Font License 1.1，可免费商用。CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/items/850/) 在线按需加载字体分包，需要网络访问该字体服务；加载失败时使用系统字体。
+
+[字体项目与授权](https://booth.pm/ja/items/7090983)。若自行托管或随项目分发字体文件，应保留对应版本的版权声明及 OFL 许可证。
 
 ## 素材说明
 
