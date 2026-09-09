@@ -43,6 +43,8 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |
+| `--bubble-radius` | `32px` | 气泡圆角半径 |
+| `--bubble-border` | `9px` | 气泡内描边宽度（内层白底与气泡边缘的间距） |
 | `--nameplate-scale` | `1` | 名牌及名字同步缩放（`0.9` 缩小 / `1.1` 放大） |
 | `--nameplate-width` | `210px` | 名牌基础宽度，超出显示省略号 |
 | `--avatar-frame-size` | `100px` | 头像装饰框尺寸 |
@@ -64,9 +66,9 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 | `--bow-size` | `104px` | 蝴蝶结尺寸 |
 | `--bow-offset-x` | `-5px` | 蝴蝶结水平偏移 |
 | `--bow-offset-y` | `0px` | 蝴蝶结垂直偏移 |
-| `--necklace-size` | `112px` | 项链挂件尺寸 |
-| `--necklace-offset-x` | `0px` | 项链挂件水平偏移 |
-| `--necklace-offset-y` | `4px` | 项链挂件垂直偏移 |
+| `--necklace-size` | `105px` | 项链挂件尺寸 |
+| `--necklace-offset-x` | `2px` | 项链挂件水平偏移 |
+| `--necklace-offset-y` | `8px` | 项链挂件垂直偏移 |
 | `--candy-size` | `58px` | 糖果尺寸 |
 | `--candy-offset-x` | `0px` | 糖果水平偏移 |
 | `--candy-offset-y` | `0px` | 糖果垂直偏移 |
@@ -139,6 +141,8 @@ CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/it
 
 | 版本 | 变更 |
 | --- | --- |
+| 1.0.18 | 微调项链挂件默认尺寸与位置（`105px` / `+2px` / `+8px`） |
+| 1.0.16 – 1.0.17 | 蝴蝶结、项链、糖果三个角标支持独立的位置与缩放参数 |
 | 1.0.15 | 更新总督头像框 |
 | 1.0.10 – 1.0.14 | 用户名配色迭代：先按大航海等级分色，后统一为 `#826b65` |
 | 1.0.7 – 1.0.9 | 字体改为荆南圆体（ZeoSeven 在线分包），补充日文回退 |
