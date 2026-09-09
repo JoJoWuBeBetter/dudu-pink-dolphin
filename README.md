@@ -56,6 +56,19 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 | `--text-space-left` | `30px` | 正文左侧留白 |
 | `--text-space-right` | `30px` | 正文右侧留白 |
 | `--text-line-height` | `1.45` | 多行文字行距（无单位） |
+| `--necklace-size` | `112px` | 项链挂件尺寸（放大缩小） |
+| `--necklace-offset-x` | `0px` | 项链挂件水平偏移（正数向右，负数向左） |
+| `--necklace-offset-y` | `4px` | 项链挂件垂直偏移（正数向下，负数向上） |
+
+装饰挂件示例（项链上下左右移动 + 缩放）：
+
+```css
+.event--message > .message {
+  --necklace-size: 130px;      /* 放大 */
+  --necklace-offset-x: -12px;  /* 向左移动 12px */
+  --necklace-offset-y: 10px;   /* 向下移动 10px */
+}
+```
 
 配色：
 

@@ -2,8 +2,8 @@
   @title        海豚也是豚
   @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
   @author       JoJoWu
-  @updated      September 09, 2026, 10:32:26 PM GMT+8
-  @version      1.0.15
+  @updated      September 09, 2026, 11:10:13 PM GMT+8
+  @version      1.0.16
 */
 
 /* 引入荆南圆体（ZeoSeven Fonts 在线分包，SIL OFL 1.1） */
@@ -35,7 +35,9 @@
     --bubble-radius: 32px;
     --bubble-border: 9px;
     --bow-size: 104px;
-    --necklace-size: 112px;
+    --necklace-size: 112px;      /* 项链挂件尺寸：放大缩小改这里 */
+    --necklace-offset-x: 0px;    /* 项链挂件水平偏移：正数向右，负数向左 */
+    --necklace-offset-y: 4px;    /* 项链挂件垂直偏移：正数向下，负数向上 */
     --candy-size: 58px;
     position: relative;
     isolation: isolate;
@@ -82,7 +84,8 @@
     box-shadow: none;
     background:
       url("./assets/bow.png") left -5px top / var(--bow-size) auto no-repeat,
-      url("./assets/necklace.png") right top 4px / var(--necklace-size) auto no-repeat,
+      /* 项链挂件：用 --necklace-offset-x / -y 调整位置，--necklace-size 调整大小 */
+      url("./assets/necklace.png") right calc(-1 * var(--necklace-offset-x, 0px)) top var(--necklace-offset-y, 4px) / var(--necklace-size) auto no-repeat,
       url("./assets/candy.png") right bottom / var(--candy-size) auto no-repeat;
   }
 
