@@ -2,8 +2,8 @@
   @title        海豚也是豚
   @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
   @author       JoJoWu
-  @updated      September 10, 2026, 10:17:58 PM GMT+8
-  @version      1.1.2
+  @updated      September 10, 2026, 10:26:23 PM GMT+8
+  @version      1.1.3
   @thumbnail    https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/assets/thumbnail.jpg
 */
 
@@ -15,9 +15,9 @@
 @layer remote-css {
   .event--message {
     --nameplate-scale: 1; /* 名牌及名字同步缩放：0.9缩小，1.1放大 */
-    --nameplate-width: 260px; /* 名牌长度（px）：装不下名字就把它调大 */
-    --nameplate-height: 48px; /* 名牌上下高度（px）：名字上下留白不够就把它调大 */
-    --nameplate-font-size: 25px; /* 名字字号固定值（px）：不随平台基准字体变化，避免改字号时名牌大小跟着变 */
+    --nameplate-width: 240px; /* 名牌长度（px）：装不下名字就把它调大 */
+    --nameplate-height: 40px; /* 名牌上下高度（px）：名字上下留白不够就把它调大 */
+    --nameplate-font-size: 22px; /* 名字字号固定值（px）：不随平台基准字体变化，避免改字号时名牌大小跟着变 */
     --avatar-frame-size: 100px;   /* 头像装饰框尺寸 */
     --avatar-hole-size: 68.7%;    /* 头像框内圈开口直径：圆头像能塞进的最大直径，素材固有比例，一般不用改 */
     --avatar-picture-gap: -2.5px; /* 头像与内圈之间的缝隙：默认负值让头像边缘压到框下面，保证四周无缝隙；0 贴住内圈上下；正值留缝 */
