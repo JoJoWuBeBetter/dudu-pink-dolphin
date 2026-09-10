@@ -2,8 +2,8 @@
   @title        海豚也是豚
   @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
   @author       JoJoWu
-  @updated      September 10, 2026, 10:26:23 PM GMT+8
-  @version      1.1.3
+  @updated      September 10, 2026, 10:29:43 PM GMT+8
+  @version      1.1.4
   @thumbnail    https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/assets/thumbnail.jpg
 */
 
@@ -30,6 +30,7 @@
     --text-space-left: 30px;   /* 正文左侧留白 */
     --text-space-right: 30px;  /* 正文右侧留白 */
     --text-line-height: 1.45;  /* 多行文字行距，无单位 */
+    --message-font-size: 30px; /* 弹幕正文字号（px）：固定值，不随平台基准字号变化 */
   }
 }
 
@@ -70,6 +71,8 @@
     color: var(--color-pink-500, #f6339a);
     font-family: "KeinannMaruPOP", "Microsoft YaHei", "Yu Gothic", "Meiryo", sans-serif !important;
     font-weight: 400;
+    /* 正文字号固定为 px，不继承平台基准字号，改平台字号时气泡内的文字大小保持稳定 */
+    font-size: var(--message-font-size, 30px) !important;
     line-height: var(--text-line-height);
     text-align: center;
     text-wrap: pretty;
