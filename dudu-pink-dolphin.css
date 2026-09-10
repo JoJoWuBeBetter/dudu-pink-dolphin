@@ -2,8 +2,8 @@
   @title        海豚也是豚
   @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
   @author       JoJoWu
-  @updated      September 10, 2026, 4:54:00 PM GMT+8
-  @version      1.1.1
+  @updated      September 10, 2026, 10:17:58 PM GMT+8
+  @version      1.1.2
   @thumbnail    https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/assets/thumbnail.jpg
 */
 
@@ -15,8 +15,9 @@
 @layer remote-css {
   .event--message {
     --nameplate-scale: 1; /* 名牌及名字同步缩放：0.9缩小，1.1放大 */
-    --nameplate-width: 210px; /* 名牌基础宽度，长名字省略 */
-    --nameplate-font-size: 20px; /* 名字字号固定值（px）：不随平台基准字体变化，避免改字号时名牌大小跟着变 */
+    --nameplate-width: 260px; /* 名牌长度（px）：装不下名字就把它调大 */
+    --nameplate-height: 48px; /* 名牌上下高度（px）：名字上下留白不够就把它调大 */
+    --nameplate-font-size: 25px; /* 名字字号固定值（px）：不随平台基准字体变化，避免改字号时名牌大小跟着变 */
     --avatar-frame-size: 100px;   /* 头像装饰框尺寸 */
     --avatar-hole-size: 68.7%;    /* 头像框内圈开口直径：圆头像能塞进的最大直径，素材固有比例，一般不用改 */
     --avatar-picture-gap: -2.5px; /* 头像与内圈之间的缝隙：默认负值让头像边缘压到框下面，保证四周无缝隙；0 贴住内圈上下；正值留缝 */
@@ -124,7 +125,8 @@
   }
   .event--message > .meta > .username {
     position: absolute !important;
-    top: calc(100% + 7px + var(--nameplate-offset-y, 0px));
+    /* 名牌垂直居中压在正文框上沿：改 --nameplate-height 时会自动重新居中 */
+    top: calc(24px - var(--nameplate-height, 34px) / 2 + var(--nameplate-offset-y, 0px));
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
@@ -134,8 +136,8 @@
     box-sizing: border-box;
     width: 34%;
     max-width: calc(100% - 180px);
-    height: 34px;
-    padding: 4px 20px;
+    height: var(--nameplate-height, 34px);
+    padding: 6px 20px;
     margin: 0 !important;
     border: 1px solid #ec81aa;
     border-radius: 999px;
@@ -260,10 +262,11 @@
   .event--message > .meta > .sender-avatar > .avatar-frame::before,
   .event--message > .meta > .sender-avatar > .avatar-frame::after { content: none !important; }
   .event--message > .meta > .username {
-    top: calc(7px + var(--nameplate-offset-y));
+    top: calc(24px - var(--nameplate-height, 34px) / 2 + var(--nameplate-offset-y, 0px));
     left: calc((100% + var(--avatar-frame-size) + var(--avatar-text-gap)) / 2);
     width: var(--nameplate-width);
-    max-width: calc(100% - var(--avatar-frame-size) - var(--avatar-text-gap) - 160px);
+    /* 窄画布上限：名牌居中压在气泡上沿，两侧各留约 34px，避免装饰圆点顶到气泡边缘 */
+    max-width: calc(100% - var(--avatar-frame-size) - var(--avatar-text-gap) - 100px);
     transform: translateX(-50%) scale(var(--nameplate-scale));
     transform-origin: center;
   }

@@ -43,8 +43,8 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 
 | 项目 | 推荐值 | 说明 |
 | --- | --- | --- |
-| 平台基准字号 | `30` | 气泡正文字号。名字是固定 `20px`（`--nameplate-font-size`），调这个值不会让名牌跟着变大变小 |
-| OBS 浏览器源 宽 × 高 | `700 × 1200` | 画布尺寸；气泡宽度、名牌宽度都按这个宽度排版 |
+| 平台基准字号 | `30` | 气泡正文字号。名字是固定 `25px`（`--nameplate-font-size`），调这个值不会让名牌跟着变大变小 |
+| OBS 浏览器源 宽 × 高 | `700 × 1200` | 画布尺寸；气泡宽度、名牌宽度都按这个宽度排版（名牌 `260px` 需要画布宽度 ≳ 500px 才能用满，更窄时会按比例收窄） |
 
 ## 可调参数
 
@@ -55,8 +55,9 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 | `--bubble-radius` | `32px` | 气泡圆角半径 |
 | `--bubble-border` | `9px` | 气泡内描边宽度（内层白底与气泡边缘的间距） |
 | `--nameplate-scale` | `1` | 名牌及名字同步缩放（`0.9` 缩小 / `1.1` 放大） |
-| `--nameplate-width` | `210px` | 名牌基础宽度，超出显示省略号 |
-| `--nameplate-font-size` | `20px` | 名字字号（固定 `px`）。不跟随平台基准字体，改平台字号时名牌大小不变 |
+| `--nameplate-width` | `260px` | 名牌长度（`px`）。装不下名字就调大；窄画布上会自动收窄 |
+| `--nameplate-height` | `48px` | 名牌上下高度（`px`）。名字上下留白不够就调大，会自动保持在气泡上沿居中 |
+| `--nameplate-font-size` | `25px` | 名字字号（固定 `px`）。不跟随平台基准字体，改平台字号时名牌大小不变 |
 | `--avatar-frame-size` | `100px` | 头像装饰框尺寸 |
 | `--avatar-hole-size` | `68.7%` | 头像框内圈开口直径，素材固有比例，一般不用改 |
 | `--avatar-picture-gap` | `-2.5px` | 头像与内圈之间的缝隙：默认负值让头像边缘压到框下面，四周无缝隙；`0` 贴住内圈上下；正值留缝 |
@@ -160,6 +161,7 @@ CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/it
 
 | 版本 | 变更 |
 | --- | --- |
+| 1.1.2 | 名牌加长加高：`--nameplate-width` `210px → 260px`、新增 `--nameplate-height: 48px`、名字字号 `20px → 25px`；名牌改为按高度自动在气泡上沿居中，窄画布上限从 `160px` 放宽到 `100px` |
 | 1.1.1 | 新增 `@thumbnail` 预览图（`assets/thumbnail.jpg`，480×384），远程模版列表里能显示样式缩略图；README 预览图换成新版截图（带透明通道） |
 | 1.1.0 | 阶段性版本：新增 `--nameplate-font-size`，名字字号固定为 `20px`，不再随平台基准字号缩放；README 补充推荐设置（基准字号 `30`、OBS `700 × 1200`） |
 | 1.0.21 | `--avatar-picture-gap` 默认加深到 `-2.5px`，并重置平台可能注入的 `padding`/`border`/`box-shadow`，确保任意缩放下都无缝隙 |
