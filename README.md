@@ -27,7 +27,7 @@ LAPLACE Chat 的粉色弹幕样式：自适应正文框、顶部用户名名牌�
 https://<你的静态托管域名>/dudu-pink-dolphin.css
 ```
 
-样式会随版本自动更新，无需手动维护。发布时请把 CSS 里的 `./assets/...` 换成对应的绝对地址。
+样式会随版本自动更新，无需手动维护。发布时请把 CSS 里的 `./assets/...` 换成对应的绝对地址，并把 `@thumbnail` 换成自己的预览图地址（仓库里默认指向 jsDelivr 上的 `assets/thumbnail.jpg`）。
 
 ### 方式二：自定义 CSS
 
@@ -116,7 +116,8 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 .
 ├── dudu-pink-dolphin.css    # 样式主文件（相对路径版）
 └── assets/
-    ├── preview.png          # 本 README 的预览图
+    ├── preview.png          # 本 README 的预览图（920×884，带透明通道）
+    ├── thumbnail.jpg        # 远程模版列表用的预览图（@thumbnail，480×384）
     ├── bow.png              # 左上蝴蝶结
     ├── necklace.png         # 右上珠链
     ├── candy.png            # 右下糖果
@@ -159,6 +160,7 @@ CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/it
 
 | 版本 | 变更 |
 | --- | --- |
+| 1.1.1 | 新增 `@thumbnail` 预览图（`assets/thumbnail.jpg`，480×384），远程模版列表里能显示样式缩略图；README 预览图换成新版截图（带透明通道） |
 | 1.1.0 | 阶段性版本：新增 `--nameplate-font-size`，名字字号固定为 `20px`，不再随平台基准字号缩放；README 补充推荐设置（基准字号 `30`、OBS `700 × 1200`） |
 | 1.0.21 | `--avatar-picture-gap` 默认加深到 `-2.5px`，并重置平台可能注入的 `padding`/`border`/`box-shadow`，确保任意缩放下都无缝隙 |
 | 1.0.20 | `--avatar-picture-gap` 默认改为 `-1.5px`，头像与装饰框之间不再有缝隙 |
