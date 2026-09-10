@@ -2,8 +2,8 @@
   @title        海豚也是豚
   @description  粉色弹幕气泡：自适应正文框 + 顶部用户名名牌，荆南圆体，中英日字体，蝴蝶结/珠链/糖果角标，按大航海等级切换头像装饰框
   @author       JoJoWu
-  @updated      September 09, 2026, 11:42:26 PM GMT+8
-  @version      1.0.21
+  @updated      September 10, 2026, 3:37:00 PM GMT+8
+  @version      1.1.0
 */
 
 /* 引入荆南圆体（ZeoSeven Fonts 在线分包，SIL OFL 1.1） */
@@ -15,6 +15,7 @@
   .event--message {
     --nameplate-scale: 1; /* 名牌及名字同步缩放：0.9缩小，1.1放大 */
     --nameplate-width: 210px; /* 名牌基础宽度，长名字省略 */
+    --nameplate-font-size: 20px; /* 名字字号固定值（px）：不随平台基准字体变化，避免改字号时名牌大小跟着变 */
     --avatar-frame-size: 100px;   /* 头像装饰框尺寸 */
     --avatar-hole-size: 68.7%;    /* 头像框内圈开口直径：圆头像能塞进的最大直径，素材固有比例，一般不用改 */
     --avatar-picture-gap: -2.5px; /* 头像与内圈之间的缝隙：默认负值让头像边缘压到框下面，保证四周无缝隙；0 贴住内圈上下；正值留缝 */
@@ -142,7 +143,8 @@
       inset 0 0 0 4px #fffafb, inset 0 0 0 6px #ffc3d9;
     overflow: visible !important;
     font-family: "KeinannMaruPOP", "Microsoft YaHei", "Yu Gothic", "Meiryo", sans-serif;
-    font-size: .8em;
+    /* 名字字号固定为 px，不继承平台基准字体，基准字号变化时名牌尺寸保持稳定 */
+    font-size: var(--nameplate-font-size, 20px) !important;
     text-align: center;
   }
   .event--message > .meta > .username > .username-text {
