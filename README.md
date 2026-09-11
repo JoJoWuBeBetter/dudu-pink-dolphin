@@ -132,7 +132,7 @@ https://<你的静态托管域名>/dudu-pink-dolphin.css
 .
 ├── dudu-pink-dolphin.css    # 样式主文件（相对路径版）
 └── assets/
-    ├── preview.png          # 本 README 的预览图（754×1050，原始截图）
+    ├── preview.png          # 本 README 的预览图（745×936，原始截图）
     ├── thumbnail.jpg        # 远程模版列表用的预览图（@thumbnail，480×384）
     ├── bow.png              # 左上蝴蝶结
     ├── necklace.png         # 右上珠链
@@ -176,6 +176,7 @@ CSS 通过顶部的 `@import` 从 [ZeoSeven Fonts](https://fonts.zeoseven.com/it
 
 | 版本 | 变更 |
 | --- | --- |
+| 1.1.8 | 预览图换成最新截图（`745×936`，原图直出）；`@thumbnail` 缩略图同步重出（`480×384`，取前三条弹幕） |
 | 1.1.7 | 重新加入 `--message-font-size`（默认 `30px`）：平台基准字号会影响所有部件，弹幕正文改为独立固定字号，与名字（`22px`）各自可调 |
 | 1.1.6 | 预览图换成新版截图（`754×1050`，原图直出）；`@thumbnail` 缩略图按新名牌样式重出（`480×384`，白底三条弹幕） |
 | 1.1.5 | 撤销 1.1.4 的弹幕正文固定字号（移除 `--message-font-size`），正文重新跟随平台基准字号 |
