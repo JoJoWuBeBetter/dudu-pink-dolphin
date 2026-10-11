@@ -1,5 +1,7 @@
 # 海豚也是豚 · dudu-pink-dolphin
 
+> V2 is maintained separately in [`v2/`](v2/README.md). The root stylesheet remains version 1.1.10.
+
 LAPLACE Chat 的粉色弹幕样式：自适应正文框、顶部用户名名牌、荆南圆体中英日字体，以及按大航海等级切换的头像装饰框。
 
 <p align="center">

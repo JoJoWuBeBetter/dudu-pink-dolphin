@@ -1,0 +1,362 @@
+/*
+  @title        海豚也是豚
+  @description  粉蓝贴纸弹幕：扁平描边气泡、顶部用户名铭牌、斜放爱心蝴蝶结/小猪挂饰，按大航海等级切换平滑头像框，荆南圆体
+  @author       JoJoWu
+  @updated      October 11, 2026 GMT+8
+  @version      1.2.0
+  @thumbnail    https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/assets/thumbnail.jpg
+*/
+
+/* 引入荆南圆体（ZeoSeven Fonts 在线分包，SIL OFL 1.1） */
+/* @import 不要嵌套在 @layer 层叠层内 */
+@import url("https://fontsapi.zeoseven.com/850/main/result.css");
+
+/* ===== 留白微调：数值越小，文字越靠近边框 ===== */
+@layer custom-css {
+  body { background-color: rgba(0, 0, 0, 0); }
+  .event--message {
+    --nameplate-scale: 1; /* 名牌及名字同步缩放：0.9缩小，1.1放大 */
+    --nameplate-width: 240px; /* 名牌长度（px）：装不下名字就把它调大 */
+    --nameplate-height: 40px; /* 名牌上下高度（px）：名字上下留白不够就把它调大 */
+    --nameplate-pear-width: 18px; /* 铭牌两端梨子剪影宽度 */
+    --nameplate-pear-height: 24px; /* 铭牌两端梨子剪影高度 */
+    --nameplate-font-size: 22px; /* 名字字号固定值（px）：不随平台基准字体变化，避免改字号时名牌大小跟着变 */
+    --avatar-frame-size: 100px;   /* 头像装饰框尺寸 */
+    --avatar-hole-size: 64.5%;    /* smooth-v2 水友开口；大航海等级在下方分别覆盖 */
+    --avatar-picture-gap: -1px; /* 少量压在内圈下面，避免新框较窄开口被头像撑出 */
+    --avatar-offset-x: 8px; /* 头像水平移动：正数向右靠近正文，负数向左 */
+    --avatar-text-gap: 5px; /* 头像与正文框间距 */
+    --avatar-offset-y: 12px; /* 头像距本条顶部 */
+    --nameplate-offset-y: 4px; /* 名牌上下偏移：正数向下，负数向上 */
+    --text-space-top: 27px;    /* 正文上方留白 */
+    --text-space-bottom: 18px; /* 正文下方留白 */
+    --text-space-left: 24px;   /* 正文左侧留白 */
+    --text-space-right: 60px;  /* 正文右侧留白 */
+    --text-line-height: 1.45;  /* 多行文字行距，无单位 */
+    --message-font-size: 30px; /* 弹幕正文字号（px）：固定值，不随平台基准字号变化；想单独调正文大小改这里 */
+    /* ===== 三件挂饰微调区（源图含透明留白） =====
+       size：源图宽度；offset-x：正数向右、负数向左；
+       offset-y：正数向下、负数向上；angle：正数顺时针、负数逆时针。
+       右上沿用 necklace 参数名，右下沿用 candy 参数名。
+    */
+    /* 左上蝴蝶结 */
+    --bow-size: 76px;
+    --bow-offset-x: -1px;
+    --bow-offset-y: 2px;
+    --bow-angle: -18deg; /* 左上蝴蝶结斜放，独立旋转，不影响气泡与其他挂件 */
+    /* 右上小猪 */
+    --necklace-size: 96px;
+    --necklace-offset-x: 4px;
+    --necklace-offset-y: -15px;
+    --pig-angle: 30deg;
+    /* 右下梨子 */
+    --candy-size: 55px;
+    --candy-offset-x: -4px;
+    --candy-offset-y: -8px;
+    --pear-angle: 0deg;
+    --pear-flip-x: -1;          /* -1 左右翻转；1 原始方向 */
+    --dudu-outline: #d8799e;
+    --dudu-paper: #fff0f6;
+    --dudu-pink: #ffe2ee;
+    --dudu-blue: #c9eef5;
+    --dudu-text: #ac4f78;
+  }
+}
+
+/* 仅装饰弹幕正文。 */
+@layer custom-css {
+  .event--message > .message {
+    --bubble-radius: 32px;
+    --bubble-border: 5px;
+    position: relative;
+    isolation: isolate;
+    display: block !important;
+    box-sizing: border-box;
+    width: calc(100% - 32px) !important;
+    max-width: calc(100% - 32px);
+    min-width: 0;
+    min-height: 0;
+    height: auto !important;
+    margin: 24px 16px 24px !important;
+    padding: var(--text-space-top) var(--text-space-right) var(--text-space-bottom) var(--text-space-left) !important;
+    border: 2px solid var(--dudu-outline) !important;
+    border-radius: var(--bubble-radius);
+    background: var(--dudu-pink) !important;
+    /* 窄白外缘与浅粉轮廓，呼应蝴蝶结，无底部厚投影 */
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3px #efbdd1 !important;
+    color: var(--dudu-text);
+    font-family: "KeinannMaruPOP", "Microsoft YaHei", "Yu Gothic", "Meiryo", sans-serif !important;
+    font-weight: 400;
+    /* 正文字号固定为 px：平台「基准字号」会影响所有部件，正文单独受控才不会牵一发动全身 */
+    font-size: var(--message-font-size, 30px) !important;
+    line-height: var(--text-line-height);
+    text-align: center;
+    text-wrap: balance;
+    text-shadow: none !important;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    overflow: visible !important;
+  }
+
+  /* 蝴蝶结独立一层，允许单独旋转；左坐标对应第二列气泡左缘 */
+  .event--message::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--avatar-frame-size) + var(--avatar-text-gap) - 4px + var(--bow-offset-x));
+    top: calc(4px + var(--bow-offset-y));
+    width: var(--bow-size);
+    height: var(--bow-size);
+    background: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/bow.png") center / contain no-repeat;
+    transform: rotate(var(--bow-angle));
+    transform-origin: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* 小猪压在气泡上沿，坐标包含正文的 24px 上边距 */
+  .event--message::before {
+    content: "";
+    position: absolute;
+    right: calc(6px - var(--necklace-offset-x));
+    top: calc(4px + var(--necklace-offset-y));
+    width: var(--necklace-size);
+    aspect-ratio: 300 / 190;
+    background: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/pig.png") center / contain no-repeat;
+    transform: rotate(var(--pig-angle));
+    transform-origin: 50% 65%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* 梨子独立翻转，靠在右下边框上，不影响其他装饰 */
+  .event--message > .message::before {
+    content: "";
+    position: absolute;
+    right: calc(-10px - var(--candy-offset-x));
+    bottom: calc(-10px - var(--candy-offset-y));
+    width: var(--candy-size);
+    aspect-ratio: 700 / 800;
+    transform: rotate(var(--pear-angle)) scaleX(var(--pear-flip-x));
+    transform-origin: 50% 75%;
+    z-index: 1;
+    pointer-events: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/pear.png") center / contain no-repeat;
+  }
+
+  .event--message > .message::after {
+    content: "";
+    position: absolute;
+    inset: var(--bubble-border);
+    z-index: -1;
+    pointer-events: none;
+    box-sizing: border-box;
+    border: 1px solid #efb8cf;
+    border-radius: calc(var(--bubble-radius) - var(--bubble-border));
+    background: var(--dudu-paper);
+    box-shadow: none;
+  }
+}
+
+/* 名牌绑定真实用户名，定位在正文框上沿中央 */
+@layer custom-css {
+  .event--message > .meta {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    overflow: visible;
+    z-index: 3;
+  }
+  .event--message > .meta > .username {
+    position: absolute !important;
+    /* 名牌垂直居中压在正文框上沿：改 --nameplate-height 时会自动重新居中 */
+    top: calc(24px - var(--nameplate-height, 34px) / 2 + var(--nameplate-offset-y, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 34%;
+    max-width: calc(100% - 180px);
+    height: var(--nameplate-height, 34px);
+    padding: 6px 40px;
+    margin: 0 !important;
+    border: 2px solid var(--dudu-outline);
+    border-radius: 999px;
+    background: var(--dudu-paper);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 3px #efbdd1, inset 0 0 0 2px var(--dudu-pink);
+    overflow: visible !important;
+    font-family: "KeinannMaruPOP", "Microsoft YaHei", "Yu Gothic", "Meiryo", sans-serif;
+    /* 名字字号固定为 px，不继承平台基准字体，基准字号变化时名牌尺寸保持稳定 */
+    font-size: var(--nameplate-font-size, 20px) !important;
+    text-align: center;
+  }
+  .event--message > .meta > .username > .username-text {
+    display: block !important;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* 用户名颜色：四档统一，由下方 .event--message 上的 --dudu-name 定义 */
+    color: var(--dudu-name, #a65379) !important;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .event--message > .meta > .username::before,
+  .event--message > .meta > .username::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: var(--nameplate-pear-width);
+    height: var(--nameplate-pear-height);
+    transform: translateY(-50%);
+    /* Upright pear silhouette, no face or outlines. */
+    background: var(--nameplate-pear-color, #bed2dd);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2012%2016%27%3E%3Cpath%20fill%3D%27%23b5dfe9%27%20d%3D%27M6%203.8C3.8%203.8%202.7%205.1%203%206.6C3.2%207.6%203.5%207.9%202.7%208.8C2.3%209.2%202%209.5%201.7%209.9C-.3%2012.7%201.2%2015.6%205.7%2015.6C10.4%2015.6%2012%2012.9%2010.1%2010C9.7%209.4%209.2%208.9%208.7%208.4C8.2%207.9%208.7%207.3%208.9%206.5C9.2%205%208.1%203.8%206%203.8ZM5.5%204.6C5.2%202.7%205.8%201.2%207.8.4L8.3%201.7C6.9%202.2%206.6%203.2%206.9%204.7Z%27%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2012%2016%27%3E%3Cpath%20fill%3D%27%23b5dfe9%27%20d%3D%27M6%203.8C3.8%203.8%202.7%205.1%203%206.6C3.2%207.6%203.5%207.9%202.7%208.8C2.3%209.2%202%209.5%201.7%209.9C-.3%2012.7%201.2%2015.6%205.7%2015.6C10.4%2015.6%2012%2012.9%2010.1%2010C9.7%209.4%209.2%208.9%208.7%208.4C8.2%207.9%208.7%207.3%208.9%206.5C9.2%205%208.1%203.8%206%203.8ZM5.5%204.6C5.2%202.7%205.8%201.2%207.8.4L8.3%201.7C6.9%202.2%206.6%203.2%206.9%204.7Z%27%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+    pointer-events: none;
+  }
+  .event--message > .meta > .username::before { left: 13px; }
+  .event--message > .meta > .username::after { right: 13px; transform: translateY(-50%); }
+}
+
+/* 左头像、右正文；1=总督，2=提督，3=舰长，0=水友 */
+@layer custom-css {
+  .event--message {
+    display: grid !important;
+    grid-template-columns: var(--avatar-frame-size) minmax(0, 1fr);
+    column-gap: var(--avatar-text-gap);
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 !important;
+    --custom-avatar-frame: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/avatar-water.png");
+    /* 用户名颜色：四个档位统一用奶茶棕 #826B65（名牌底上 4.67:1，清晰可读） */
+    --dudu-name: #826b65;
+  }
+  /* 本文件为脱敏版（相对路径）。发布到远程模版时把素材地址换成绝对 URL，并给头像框加 ?v= 版本参数：换图后递增，客户端才会重新拉取 */
+  .event--message.guard-level--3 { --custom-avatar-frame: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/avatar-captain.png"); --avatar-hole-size: 66.5%; } /* 舰长 */
+  .event--message.guard-level--2 { --custom-avatar-frame: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/avatar-admiral.png"); --avatar-hole-size: 63.5%; } /* 提督：双星装饰 */
+  .event--message.guard-level--1 { --custom-avatar-frame: url("https://cdn.jsdelivr.net/gh/JoJoWuBeBetter/dudu-pink-dolphin@main/v2/assets/avatar-governor.png"); --avatar-hole-size: 62.5%; } /* 总督 */
+  .event--message > .meta { display: contents !important; }
+  .event--message > .message { grid-column: 2; grid-row: 1; }
+  .event--message > .meta > :not(.sender-avatar):not(.username),
+  .event--message > .avatar-alt-outer,
+  .event--message .avatar-alt-top,
+  .event--message .avatar-alt-bottom,
+  .event--message .mod-badge,
+  .event--message .guard-badge,
+  .event--message .current-rank { display: none !important; }
+  .event--message > .meta > .sender-avatar {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    position: relative !important;
+    display: block !important;
+    width: var(--avatar-frame-size) !important;
+    height: var(--avatar-frame-size) !important;
+    margin: var(--avatar-offset-y) 0 0 !important;
+    transform: translateX(var(--avatar-offset-x, 0px)) !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    isolation: isolate;
+  }
+  .event--message > .meta > .sender-avatar::before,
+  .event--message > .meta > .sender-avatar::after { content: none !important; }
+  .event--message > .meta > .sender-avatar > .avatar-img-wrap {
+    position: absolute !important;
+    display: block !important;
+    /* 头像直径 = 内圈开口直径 − 左右各一份缝隙；在元素自身计算，改参数时从任意上层都能生效 */
+    width: calc(var(--avatar-hole-size) - 2 * var(--avatar-picture-gap)) !important;
+    height: calc(var(--avatar-hole-size) - 2 * var(--avatar-picture-gap)) !important;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .event--message > .meta > .sender-avatar .avatar {
+    display: block;
+    width: 100% !important; height: 100% !important;
+    border-radius: 50%; object-fit: cover;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .event--message > .meta > .sender-avatar > .avatar-frame {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important; height: 100% !important;
+    transform: none !important;
+    background: var(--custom-avatar-frame) center / contain no-repeat !important;
+    border: none !important; box-shadow: none !important;
+    z-index: 1; pointer-events: none;
+  }
+  .event--message > .meta > .sender-avatar > .avatar-frame::before,
+  .event--message > .meta > .sender-avatar > .avatar-frame::after { content: none !important; }
+  .event--message > .meta > .username {
+    top: calc(24px - var(--nameplate-height, 34px) / 2 + var(--nameplate-offset-y, 0px));
+    left: calc((100% + var(--avatar-frame-size) + var(--avatar-text-gap)) / 2);
+    width: var(--nameplate-width);
+    /* 窄画布上限：名牌居中压在气泡上沿，两侧各留约 34px，避免装饰圆点顶到气泡边缘 */
+    max-width: calc(100% - var(--avatar-frame-size) - var(--avatar-text-gap) - 100px);
+    transform: translateX(-50%) scale(var(--nameplate-scale));
+    transform-origin: center;
+  }
+}
+
+/* ===== 弹幕进入动效：从左向右滑入 + 淡入 =====
+   只在事件速率低于弹幕机阈值时播放（此时事件列表带 .can-motion）；
+   速率过高或控制台模式下平台改用 .reduced-motion，动画不播放，弹幕保持静态可读。
+   想调整幅度改 translateX 的 -32px，想调整快慢改 --animation-duration 的兜底值。 */
+@layer custom-css {
+  .can-motion .event--message {
+    animation-name: dudu-enter-left;
+    animation-duration: var(--animation-duration, 320ms);
+    animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation-fill-mode: both;
+  }
+
+  .reduced-motion .event--message {
+    animation: none;
+    transition: none;
+  }
+
+  @keyframes dudu-enter-left {
+    from {
+      opacity: 0;
+      transform: translateX(-32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/* Hide bottom-right pear ornament; keep nameplate pear silhouettes. */
+@layer custom-css {
+  .event--message > .message::before { content: none; }
+}
+
+/* Nameplate pear color by guard level: 0 audience, 3 captain, 2 admiral, 1 governor. */
+@layer custom-css {
+  .event--message { --nameplate-pear-color: #bed2dd; }
+  .event--message.guard-level--3 { --nameplate-pear-color: #65b5de; }
+  .event--message.guard-level--2 { --nameplate-pear-color: #b58ad5; }
+  .event--message.guard-level--1 { --nameplate-pear-color: #efcb78; }
+}
